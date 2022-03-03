@@ -1,19 +1,63 @@
 #include "CalculateReferenceLine.hpp"
 
-CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName) 
+CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, double deltaS)
 	: OpenDrive(openDriveFileName) {
-	
+	// std::ofstream file;
+	// file.open("test.csv");
+	static char strbuf[1024];
+	double x, y, hdg, laneoff;
+
 	for (auto r : road_) {
-		for (auto ls : r->getLaneSectionVector()) {
-			for (auto l : ls->getLaneVector()) {
-				for (auto rm : l->getLaneRoadMarkVector()) {
-					std::cout << "road mark for lane "
-							  // << lane->GetId() << " has width "
-							  << rm->GetWidth() << std::endl;
-				}
+		// file << "lane, " << r->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
+		RoadLineXYZHdg roadRefLine;
+		for (auto g : r->getGeometryVector()) {
+			auto lin = linspace(g->GetLength(), deltaS);
+			for (auto ds : lin) {
+				g->EvaluateDS(ds, &x, &y, &hdg);
+				laneoff = r->GetLaneOffset(ds + g->GetS());
+				auto reflineOffsetXY = globalReflineOffset(laneoff, hdg);
+
+				x += reflineOffsetXY[0];
+				y += reflineOffsetXY[1];
+
+				// snprintf(strbuf, sizeof(strbuf), "%lf, %lf, %lf, %lf\n", x, y, 0.0, hdg);
+				// file << strbuf;
+				roadRefLine.xyz.x.push_back(x);
+				roadRefLine.xyz.y.push_back(y);
+				roadRefLine.xyz.z.push_back(0.0);
+				roadRefLine.hdg.push_back(hdg);
 			}
 		}
+		openDriveReferenceLines.insert(std::pair<int, RoadLineXYZHdg>(r->GetId(), roadRefLine));
 	}
 }
+CalculateReferenceLine::~CalculateReferenceLine() {}
 
+std::vector<double> CalculateReferenceLine::linspace(double length, double deltaS) {
+	size_t nrOfPoints = size_t(length / deltaS);
+	std::vector<double> linspace(nrOfPoints + 1);
+	std::generate(linspace.begin(), linspace.end(), [=, n = 0]() mutable {
+		double q = n * deltaS;
+		n++;
+		return q;
+	});
+	if (linspace.back() < length) {
+		linspace.push_back(length);
+
+	} else if (linspace[nrOfPoints] < length) {
+		assert(false && "linspace end value heigher than road lenght, should be impossible to reach");
+		// should not be abel to get here
+		auto it = std::remove_if(linspace.begin(), linspace.end(), [=](double i) { return (i > length); });
+		linspace.erase(it);
+		linspace.push_back(length);
+	}
+
+	return linspace;
+}
 // CalculateReferenceLine::~CalculateReferenceLine() {}
+std::vector<double> CalculateReferenceLine::globalReflineOffset(double offsetT, double hdg) {
+	double offsetX = offsetT * cos(hdg + M_PI_2);
+	double offsetY = offsetT * sin(hdg + M_PI_2);
+	std::vector<double> v = {offsetX, offsetY};
+	return v;
+}

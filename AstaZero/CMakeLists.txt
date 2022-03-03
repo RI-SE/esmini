@@ -15,15 +15,13 @@ add_subdirectory(${ROADMANAGER_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/build/ro
 add_executable(${TARGET} 
   src/CalculateReferenceLine.cpp 
   src/main.cpp
+  src/OverlappingReferenceLines.cpp
 )
-
 include_directories (
   ${COMMON_MINI_INCLUDE_DIR}
   ${ROADMANAGER_INCLUDE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/inc  
   "${ROADMANAGER_INCLUDE_DIR}/inc"
 )
-
-
-target_link_libraries(${TARGET} RoadManager CommonMini pthread)
+  target_link_libraries(${TARGET} RoadManager CommonMini pthread)
 

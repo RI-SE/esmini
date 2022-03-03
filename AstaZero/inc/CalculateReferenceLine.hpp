@@ -1,21 +1,34 @@
 #pragma once
 
+#include <algorithm>
+#include <cassert>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include "OpenDrive.hpp"
-class CalculateReferenceLine : public OpenDrive {
-   private:
-   public:
-	CalculateReferenceLine(const char* openDriveFileName);
-	// ~CalculateReferenceLine();
-};
 
-struct RoadLine3D {
+struct RoadLineXYZ {
 	std::vector<double> x;
 	std::vector<double> y;
 	std::vector<double> z;
-	
 };
+struct RoadLineXYZHdg {
+	RoadLineXYZ xyz;
+	std::vector<double> hdg;
+};
+
+class CalculateReferenceLine : public OpenDrive {
+   private:
+   public:
+	CalculateReferenceLine(const char* openDriveFileName, double deltaS);
+	~CalculateReferenceLine();
+	std::vector<double> linspace(double length, double deltaS);
+	std::vector<double> globalReflineOffset(double s, double heading);
+	// ~CalculateReferenceLine();
+   protected:
+	std::map<int, RoadLineXYZHdg> openDriveReferenceLines;
+};
+
 
 
 /**
