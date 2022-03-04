@@ -7,14 +7,16 @@
 #include <map>
 #include "OpenDrive.hpp"
 
-struct RoadLineXYZ {
-	std::vector<XYZ> point;
-};
 struct XYZ {
 	double x;
 	double y;
 	double z;
 };
+
+struct RoadLineXYZ {
+	std::vector<XYZ> point;
+};
+
 struct RoadLineXYZHdg : RoadLineXYZ {
 	std::vector<double> hdg;
 };
