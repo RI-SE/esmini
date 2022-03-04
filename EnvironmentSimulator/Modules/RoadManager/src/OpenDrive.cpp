@@ -1321,6 +1321,11 @@ bool OpenDrive::LoadOpenDriveFile(const char* filename, bool replace) {
 				} else {
 					connecting_road_id = atoi(connection_node.attribute("connectingRoad").value());
 				}
+				auto checkRoadExist = std::find_if(road_.begin(),road_.end(), [=](std::shared_ptr<Road> tmpr){return tmpr->GetId() == connecting_road_id;});
+				if (checkRoadExist==road_.end()){
+					continue;
+				};
+
 				std::shared_ptr<Road> connecting_road = GetRoadById(connecting_road_id);
 
 				// Check that the connecting road is referring back to this junction
