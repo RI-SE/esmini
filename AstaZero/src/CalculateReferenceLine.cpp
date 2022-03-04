@@ -6,6 +6,8 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 	// file.open("test.csv");
 	static char strbuf[1024];
 	double x, y, hdg, laneoff;
+	XYZ tmpXYZ;
+
 
 	for (auto r : road_) {
 		// file << "lane, " << r->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
@@ -22,9 +24,10 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 
 				// snprintf(strbuf, sizeof(strbuf), "%lf, %lf, %lf, %lf\n", x, y, 0.0, hdg);
 				// file << strbuf;
-				roadRefLine.xyz.x.push_back(x);
-				roadRefLine.xyz.y.push_back(y);
-				roadRefLine.xyz.z.push_back(0.0);
+				tmpXYZ.x = x;
+				tmpXYZ.y = y;
+				tmpXYZ.z = 0.0;
+				roadRefLine.point.push_back(tmpXYZ);
 				roadRefLine.hdg.push_back(hdg);
 			}
 		}

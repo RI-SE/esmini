@@ -8,12 +8,14 @@
 #include "OpenDrive.hpp"
 
 struct RoadLineXYZ {
-	std::vector<double> x;
-	std::vector<double> y;
-	std::vector<double> z;
+	std::vector<XYZ> point;
 };
-struct RoadLineXYZHdg {
-	RoadLineXYZ xyz;
+struct XYZ {
+	double x;
+	double y;
+	double z;
+};
+struct RoadLineXYZHdg : RoadLineXYZ {
 	std::vector<double> hdg;
 };
 
@@ -28,8 +30,6 @@ class CalculateReferenceLine : public OpenDrive {
    protected:
 	std::map<int, RoadLineXYZHdg> openDriveReferenceLines;
 };
-
-
 
 /**
  * What do I need to fix, I need parampoly3 calculater and fitter same with poly3.
