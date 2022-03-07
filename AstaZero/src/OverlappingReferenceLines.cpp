@@ -3,30 +3,32 @@
 OverlappingReferenceLines::OverlappingReferenceLines(const char* openDriveFileName, double deltaS)
 	: CalculateReferenceLine(openDriveFileName, deltaS) {
 	double error;
+	std::string output_file_name = "test2.csv";
 	std::ofstream file;
+	file.open(output_file_name);
+	std::string sampling_step = "1.0";
 	static char strbuf[1024];
-	file.open("test5.csv");
+	for (auto it = openDriveReferenceLines.begin(); it != openDriveReferenceLines.end(); ++it) {
+		if (std::next(it, 1) == openDriveReferenceLines.end())
+			break;
+		error = rootMeanSquareError(it->second, (std::next(it, 1)->second));
+		if (error < 1 && compareGeometryHeading(it->first, std::next(it, 1)->first, 170.0, 190.0)) {
+			file << "lane, " << it->first->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
 
-	for (const auto& [key1, value1] : openDriveReferenceLines) {
-		for (const auto& [key2, value2] : openDriveReferenceLines) {
-			if (key1->GetId() == key2->GetId())
-				continue;
-			error = rootMeanSquareError(value1, value2);
-
-			if (error < 1 && compareGeometryHeading(key1, key2, 170.0, 190.0)) {
-				std::cout << "dist error is: " << error << "for key1: " << key1->GetId()
-						  << " key2: " << key2->GetId() << std::endl;
-				file << "lane, " << key1->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
-				for (const auto v : value1) {
-					snprintf(strbuf, sizeof(strbuf), "%lf, %lf, %lf, %lf\n", v->x, v->y, 0.0, 0.0);
-					file << strbuf;
-				}
-				file << "lane, " << key2->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
-				for (const auto v : value2) {
-					snprintf(strbuf, sizeof(strbuf), "%lf, %lf, %lf, %lf\n", v->x, v->y, 0.0, 0.0);
-					file << strbuf;
-				}
+			std::cout << "Error Dist: " << error << " Road id1 :" << it->first->GetId()
+					  << " Road id2: " << std::next(it, 1)->first->GetId() << std::endl;
+			for (auto v : it->second) {
+				snprintf(strbuf, sizeof(strbuf), "%f, %f, %f, %f\n", v->x, v->y, 0, 0);
+				file << strbuf;
 			}
+			file << "lane, " << std::next(it,1)->first->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
+
+			for (auto v : std::next(it,1)->second) {
+				snprintf(strbuf, sizeof(strbuf), "%f, %f, %f, %f\n", v->x, v->y, 0, 0);
+				file << strbuf;
+			}
+			overlappingRoads.insert(
+				std::pair<std::shared_ptr<Road>, std::shared_ptr<Road>>(it->first, std::next(it, 1)->first));
 		}
 	}
 }

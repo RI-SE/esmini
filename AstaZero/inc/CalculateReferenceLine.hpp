@@ -22,7 +22,6 @@ class CalculateReferenceLine : public OpenDrive {
    private:
    public:
 	CalculateReferenceLine(const char* openDriveFileName, double deltaS);
-	~CalculateReferenceLine();
 	std::vector<double> linspace(double length, double deltaS);
 	std::vector<double> globalReflineOffset(double s, double heading);
 
