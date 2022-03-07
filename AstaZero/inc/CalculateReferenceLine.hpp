@@ -7,18 +7,15 @@
 #include <map>
 #include "OpenDrive.hpp"
 
-struct XYZ {
+class XYZ {
+   public:
 	double x;
 	double y;
 	double z;
 };
-
-struct RoadLineXYZ {
-	std::vector<XYZ> point;
-};
-
-struct RoadLineXYZHdg : RoadLineXYZ {
-	std::vector<double> hdg;
+class XYZHdg : public XYZ {
+   public:
+	double heading;
 };
 
 class CalculateReferenceLine : public OpenDrive {
@@ -28,12 +25,7 @@ class CalculateReferenceLine : public OpenDrive {
 	~CalculateReferenceLine();
 	std::vector<double> linspace(double length, double deltaS);
 	std::vector<double> globalReflineOffset(double s, double heading);
-	// ~CalculateReferenceLine();
-   protected:
-	std::map<int, RoadLineXYZHdg> openDriveReferenceLines;
-};
 
-/**
- * What do I need to fix, I need parampoly3 calculater and fitter same with poly3.
- * Linespace function and find nearest neighbour
- */
+   protected:
+	std::map<std::shared_ptr<Road>, std::vector<std::shared_ptr<XYZ>>> openDriveReferenceLines;
+};

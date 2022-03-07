@@ -6,12 +6,12 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 	// file.open("test.csv");
 	static char strbuf[1024];
 	double x, y, hdg, laneoff;
-	XYZ tmpXYZ;
+	XYZHdg tmpXYZHdg;
 
 
 	for (auto r : road_) {
 		// file << "lane, " << r->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
-		RoadLineXYZHdg roadRefLine;
+		std::vector<std::shared_ptr<XYZ>> roadRefLine;
 		for (auto g : r->getGeometryVector()) {
 			auto lin = linspace(g->GetLength(), deltaS);
 			for (auto ds : lin) {
@@ -24,14 +24,14 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 
 				// snprintf(strbuf, sizeof(strbuf), "%lf, %lf, %lf, %lf\n", x, y, 0.0, hdg);
 				// file << strbuf;
-				tmpXYZ.x = x;
-				tmpXYZ.y = y;
-				tmpXYZ.z = 0.0;
-				roadRefLine.point.push_back(tmpXYZ);
-				roadRefLine.hdg.push_back(hdg);
+				tmpXYZHdg.x = x;
+				tmpXYZHdg.y = y;
+				tmpXYZHdg.z = 0.0;
+				tmpXYZHdg.heading = hdg;
+				roadRefLine.push_back(std::make_shared<XYZHdg>(tmpXYZHdg));
 			}
 		}
-		openDriveReferenceLines.insert(std::pair<int, RoadLineXYZHdg>(r->GetId(), roadRefLine));
+		openDriveReferenceLines.insert(std::pair<std::shared_ptr<Road>, std::vector<std::shared_ptr<XYZ>>>(r, roadRefLine));
 	}
 }
 CalculateReferenceLine::~CalculateReferenceLine() {}

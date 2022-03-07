@@ -5,9 +5,10 @@ class OverlappingReferenceLines : public CalculateReferenceLine {
 	/* data */
    public:
 	OverlappingReferenceLines(const char* openDriveFileName, double deltaS);
-	~OverlappingReferenceLines();
 	double euclideanDistance(XYZ p1, XYZ p2);
-	double rootMeanSquareError(RoadLineXYZ line1, RoadLineXYZ line2);
+	double rootMeanSquareError(std::vector<std::shared_ptr<XYZ>> line1,
+							   std::vector<std::shared_ptr<XYZ>> line2);
 	double rootMeanSquareError(std::vector<double> errorVector);
-	std::vector<double> distPoint2Line(RoadLineXYZ line, XYZ point);
+	std::vector<double> calculateDistPoint2Line(std::vector<std::shared_ptr<XYZ>> line, XYZ& point);
+	bool compareGeometryHeading(std::shared_ptr<Road> r1, std::shared_ptr<Road> r2, double min, double max);
 };
