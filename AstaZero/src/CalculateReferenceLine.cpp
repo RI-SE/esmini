@@ -2,7 +2,6 @@
 
 CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, double deltaS)
 	: OpenDrive(openDriveFileName) {
-	static char strbuf[1024];
 	double x, y, hdg, laneoff;
 	XYZ tmpXYZ;
 
