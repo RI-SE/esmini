@@ -51,7 +51,6 @@ std::vector<double> CalculateReferenceLine::linspace(double length, double delta
 
 	return linspace;
 }
-// CalculateReferenceLine::~CalculateReferenceLine() {}
 std::vector<double> CalculateReferenceLine::globalReflineOffset(double offsetT, double hdg) {
 	double offsetX = offsetT * cos(hdg + M_PI_2);
 	double offsetY = offsetT * sin(hdg + M_PI_2);
