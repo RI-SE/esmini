@@ -7,7 +7,6 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 
 
 	for (auto r : road_) {
-		// file << "lane, " << r->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
 		RoadLineXYZHdg roadRefLine;
 		for (auto g : r->getGeometryVector()) {
 			auto lin = linspace(g->GetLength(), deltaS);
