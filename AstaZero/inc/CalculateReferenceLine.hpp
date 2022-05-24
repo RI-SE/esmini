@@ -26,7 +26,6 @@ class CalculateReferenceLine : public OpenDrive {
 	~CalculateReferenceLine();
 	std::vector<double> linspace(double length, double deltaS);
 	std::vector<double> globalReflineOffset(double s, double heading);
-	// ~CalculateReferenceLine();
    protected:
 	std::map<int, RoadLineXYZHdg> openDriveReferenceLines;
 };
