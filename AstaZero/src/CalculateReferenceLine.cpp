@@ -43,10 +43,6 @@ std::vector<double> CalculateReferenceLine::linspace(double length, double delta
 
 	} else if (linspace[nrOfPoints] < length) {
 		assert(false && "linspace end value heigher than road lenght, should be impossible to reach");
-		// should not be abel to get here
-		auto it = std::remove_if(linspace.begin(), linspace.end(), [=](double i) { return (i > length); });
-		linspace.erase(it);
-		linspace.push_back(length);
 	}
 
 	return linspace;
