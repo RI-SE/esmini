@@ -20,8 +20,6 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 				x += reflineOffsetXY[0];
 				y += reflineOffsetXY[1];
 
-				// snprintf(strbuf, sizeof(strbuf), "%lf, %lf, %lf, %lf\n", x, y, 0.0, hdg);
-				// file << strbuf;
 				tmpXYZ.x = x;
 				tmpXYZ.y = y;
 				tmpXYZ.z = 0.0;
