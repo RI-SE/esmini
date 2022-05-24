@@ -2,8 +2,6 @@
 
 CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, double deltaS)
 	: OpenDrive(openDriveFileName) {
-	// std::ofstream file;
-	// file.open("test.csv");
 	static char strbuf[1024];
 	double x, y, hdg, laneoff;
 	XYZ tmpXYZ;
