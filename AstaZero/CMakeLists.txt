@@ -11,11 +11,13 @@ set (ROADMANAGER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../EnvironmentSimulato
 
 add_subdirectory(${COMMON_MINI_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/build/commonMini)
 add_subdirectory(${ROADMANAGER_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/build/roadManager)
+set(PUGIXML_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../externals/pugixml")
 
 include_directories (
   ${COMMON_MINI_INCLUDE_DIR}
   ${ROADMANAGER_INCLUDE_DIR}  
   "${ROADMANAGER_INCLUDE_DIR}/inc"
+  ${PUGIXML_INCLUDE_DIR}
 )
 
 add_executable(${TARGET} main.cpp)
