@@ -1,10 +1,5 @@
 
-include_directories (
-  ${PUGIXML_INCLUDE_DIR}
-  ${COMMON_MINI_INCLUDE_DIR}
-  ${ROADMANAGER_INCLUDE_DIR}  
-  "${CMAKE_CURRENT_SOURCE_DIR}/inc"
-)
+
 
 set ( SOURCES
   src/Arc.cpp
@@ -35,7 +30,7 @@ set ( SOURCES
   src/ParamPoly3.cpp
   src/Poly3.cpp
   src/Polynomial.cpp
-  #src/Position.cpp
+  # src/Position.cpp
   src/Repeat.cpp
   src/RMObject.cpp
   src/Road.cpp
@@ -48,6 +43,7 @@ set ( SOURCES
 )
 
 set ( SRC_ADDITIONAL ../../../externals/pugixml/pugixml.cpp)
+set(PUGIXML_INCLUDE_DIR ../../../externals/pugixml)
 
 SOURCE_GROUP("External Libraries" FILES ${SRC_ADDITIONAL})
 
@@ -80,7 +76,7 @@ set ( INCLUDES
   inc/ParamPoly3.hpp
   inc/Poly3.hpp
   inc/Polynomial.hpp
-  #inc/Position.hpp
+  # inc/Position.hpp
   inc/Repeat.hpp
   inc/RMObject.hpp
   inc/Road.hpp
@@ -92,7 +88,12 @@ set ( INCLUDES
   inc/StructsandDefines.hpp
   inc/Userdata.hpp
 )
-
+include_directories (
+  ${PUGIXML_INCLUDE_DIR}
+  ${COMMON_MINI_INCLUDE_DIR}
+  ${ROADMANAGER_INCLUDE_DIR}  
+  "${CMAKE_CURRENT_SOURCE_DIR}/inc"
+)
 if(MSVC)
 	add_definitions("/wd4482")
 endif()
