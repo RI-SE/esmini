@@ -3,11 +3,11 @@
 CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, double deltaS)
 	: OpenDrive(openDriveFileName) {
 	double x, y, hdg, laneoff;
-	XYZ tmpXYZ;
-
+	XYZHdg tmpXYZHdg;
 
 	for (auto r : road_) {
-		RoadLineXYZHdg roadRefLine;
+
+		std::vector<std::shared_ptr<XYZ>> roadRefLine;
 		for (auto g : r->getGeometryVector()) {
 			auto lin = linspace(g->GetLength(), deltaS);
 			for (auto ds : lin) {
@@ -18,17 +18,18 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 				x += reflineOffsetXY[0];
 				y += reflineOffsetXY[1];
 
-				tmpXYZ.x = x;
-				tmpXYZ.y = y;
-				tmpXYZ.z = 0.0;
-				roadRefLine.point.push_back(tmpXYZ);
-				roadRefLine.hdg.push_back(hdg);
+				tmpXYZHdg.x = x;
+				tmpXYZHdg.y = y;
+				tmpXYZHdg.z = 0.0;
+				tmpXYZHdg.heading = hdg;
+				roadRefLine.push_back(std::make_shared<XYZHdg>(tmpXYZHdg));
+
 			}
 		}
-		openDriveReferenceLines.insert(std::pair<int, RoadLineXYZHdg>(r->GetId(), roadRefLine));
+		openDriveReferenceLines.insert(
+			std::pair<std::shared_ptr<Road>, std::vector<std::shared_ptr<XYZ>>>(r, roadRefLine));
 	}
 }
-CalculateReferenceLine::~CalculateReferenceLine() {}
 
 std::vector<double> CalculateReferenceLine::linspace(double length, double deltaS) {
 	size_t nrOfPoints = size_t(length / deltaS);
@@ -43,10 +44,15 @@ std::vector<double> CalculateReferenceLine::linspace(double length, double delta
 
 	} else if (linspace[nrOfPoints] < length) {
 		assert(false && "linspace end value heigher than road lenght, should be impossible to reach");
+
+		auto it = std::remove_if(linspace.begin(), linspace.end(), [=](double i) { return (i > length); });
+		linspace.erase(it);
+		linspace.push_back(length);
 	}
 
 	return linspace;
 }
+
 std::vector<double> CalculateReferenceLine::globalReflineOffset(double offsetT, double hdg) {
 	double offsetX = offsetT * cos(hdg + M_PI_2);
 	double offsetY = offsetT * sin(hdg + M_PI_2);
