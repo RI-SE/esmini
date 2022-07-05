@@ -2,13 +2,11 @@
 
 CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, double deltaS)
 	: OpenDrive(openDriveFileName) {
-	// std::ofstream file;
-	// file.open("test.csv");
-	static char strbuf[1024];
 	double x, y, hdg, laneoff;
 	XYZHdg tmpXYZHdg;
 
 	for (auto r : road_) {
+
 		std::vector<std::shared_ptr<XYZ>> roadRefLine;
 		for (auto g : r->getGeometryVector()) {
 			auto lin = linspace(g->GetLength(), deltaS);
@@ -25,6 +23,7 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 				tmpXYZHdg.z = 0.0;
 				tmpXYZHdg.heading = hdg;
 				roadRefLine.push_back(std::make_shared<XYZHdg>(tmpXYZHdg));
+
 			}
 		}
 		openDriveReferenceLines.insert(
@@ -45,6 +44,7 @@ std::vector<double> CalculateReferenceLine::linspace(double length, double delta
 
 	} else if (linspace[nrOfPoints] < length) {
 		assert(false && "linspace end value heigher than road lenght, should be impossible to reach");
+
 		auto it = std::remove_if(linspace.begin(), linspace.end(), [=](double i) { return (i > length); });
 		linspace.erase(it);
 		linspace.push_back(length);

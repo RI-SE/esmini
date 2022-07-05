@@ -11,6 +11,7 @@ set (ROADMANAGER_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../EnvironmentSimulato
 
 add_subdirectory(${COMMON_MINI_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/build/commonMini)
 add_subdirectory(${ROADMANAGER_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/build/roadManager)
+set(PUGIXML_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../externals/pugixml")
 
 add_executable(${TARGET} 
   src/CalculateReferenceLine.cpp 
@@ -22,6 +23,7 @@ include_directories (
   ${ROADMANAGER_INCLUDE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/inc  
   "${ROADMANAGER_INCLUDE_DIR}/inc"
+  ${PUGIXML_INCLUDE_DIR}
 )
   target_link_libraries(${TARGET} RoadManager CommonMini pthread)
 
