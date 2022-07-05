@@ -1,5 +1,3 @@
-#pragma once
-
 #include "RoadObject.hpp"
 
 void ValidityRecord::Save(pugi::xml_node& object) {
