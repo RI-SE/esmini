@@ -22,12 +22,22 @@ struct RoadLineXYZHdg : RoadLineXYZ {
 class CalculateReferenceLine : public OpenDrive {
    private:
    public:
+<<<<<<< Updated upstream
 	CalculateReferenceLine(const char* openDriveFileName, double deltaS);
 	~CalculateReferenceLine();
 	std::vector<double> linspace(double length, double deltaS);
 	std::vector<double> globalReflineOffset(double s, double heading);
    protected:
 	std::map<int, RoadLineXYZHdg> openDriveReferenceLines;
+=======
+	CalculateReferenceLine(const char* openDriveFileName);
+	std::vector<double> linspace(double length, double deltaS);
+	std::vector<double> globalReflineOffset(double s, double heading);
+
+   protected:
+	void sampleRefline(double deltaS);
+	std::map<std::shared_ptr<Road>, std::vector<std::shared_ptr<XYZ>>> openDriveReferenceLines;
+>>>>>>> Stashed changes
 };
 
 /**

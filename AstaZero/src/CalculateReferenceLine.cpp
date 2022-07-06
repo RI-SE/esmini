@@ -1,13 +1,16 @@
 #include "CalculateReferenceLine.hpp"
 
-CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, double deltaS)
-	: OpenDrive(openDriveFileName) {
+CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName)
+	: OpenDrive(openDriveFileName) {}
+
+void CalculateReferenceLine::sampleRefline(double deltaS) {
 	double x, y, hdg, laneoff;
 	XYZ tmpXYZ;
 
 
 	for (auto r : road_) {
-		RoadLineXYZHdg roadRefLine;
+		std::vector<std::shared_ptr<XYZ>> roadRefLine;
+
 		for (auto g : r->getGeometryVector()) {
 			auto lin = linspace(g->GetLength(), deltaS);
 			for (auto ds : lin) {
@@ -18,11 +21,11 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 				x += reflineOffsetXY[0];
 				y += reflineOffsetXY[1];
 
-				tmpXYZ.x = x;
-				tmpXYZ.y = y;
-				tmpXYZ.z = 0.0;
-				roadRefLine.point.push_back(tmpXYZ);
-				roadRefLine.hdg.push_back(hdg);
+				tmpXYZHdg.x = x;
+				tmpXYZHdg.y = y;
+				tmpXYZHdg.z = 0.0;
+				tmpXYZHdg.heading = hdg;
+				roadRefLine.push_back(std::make_shared<XYZHdg>(tmpXYZHdg));
 			}
 		}
 		openDriveReferenceLines.insert(std::pair<int, RoadLineXYZHdg>(r->GetId(), roadRefLine));
@@ -31,8 +34,8 @@ CalculateReferenceLine::CalculateReferenceLine(const char* openDriveFileName, do
 CalculateReferenceLine::~CalculateReferenceLine() {}
 
 std::vector<double> CalculateReferenceLine::linspace(double length, double deltaS) {
-	size_t nrOfPoints = size_t(length / deltaS);
-	std::vector<double> linspace(nrOfPoints + 1);
+	size_t nrOfSegments = size_t(length / deltaS);
+	std::vector<double> linspace(nrOfSegments + 1);
 	std::generate(linspace.begin(), linspace.end(), [=, n = 0]() mutable {
 		double q = n * deltaS;
 		n++;
@@ -41,7 +44,7 @@ std::vector<double> CalculateReferenceLine::linspace(double length, double delta
 	if (linspace.back() < length) {
 		linspace.push_back(length);
 
-	} else if (linspace[nrOfPoints] < length) {
+	} else if (linspace[nrOfSegments] < length) {
 		assert(false && "linspace end value heigher than road lenght, should be impossible to reach");
 	}
 
