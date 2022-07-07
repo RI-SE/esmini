@@ -1,8 +1,7 @@
 #include "OverlappingReferenceLines.hpp"
 
 OverlappingReferenceLines::OverlappingReferenceLines(const char* openDriveFileName, double deltaS)
-	: CalculateReferenceLine(openDriveFileName) {
-	sampleRefline(deltaS);
+	: CalculateReferenceLine(openDriveFileName, deltaS) {
 	double error;
 	std::string output_file_name = "test2.csv";
 	std::ofstream file;
@@ -22,9 +21,10 @@ OverlappingReferenceLines::OverlappingReferenceLines(const char* openDriveFileNa
 				snprintf(strbuf, sizeof(strbuf), "%f, %f, %f, %f\n", v->x, v->y, 0, 0);
 				file << strbuf;
 			}
-			file << "lane, " << std::next(it,1)->first->GetId() << ", " << 0 << ", " << 0 << ", driving" << std::endl;
+			file << "lane, " << std::next(it, 1)->first->GetId() << ", " << 0 << ", " << 0 << ", driving"
+				 << std::endl;
 
-			for (auto v : std::next(it,1)->second) {
+			for (auto v : std::next(it, 1)->second) {
 				snprintf(strbuf, sizeof(strbuf), "%f, %f, %f, %f\n", v->x, v->y, 0, 0);
 				file << strbuf;
 			}
