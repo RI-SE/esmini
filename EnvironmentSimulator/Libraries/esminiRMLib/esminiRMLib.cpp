@@ -250,14 +250,7 @@ extern "C"
             roadmanager::Road *road = odrManager->GetRoadById(road_id);
             roadmanager::Road *successor_road = odrManager->GetRoadById(other_id);
 
-            if(road->IsSuccessor(successor_road))
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            return (int)road->IsSuccessor(successor_road)
         }
     }
 
