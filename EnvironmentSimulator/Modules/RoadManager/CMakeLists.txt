@@ -30,12 +30,21 @@ set ( SOURCES
   src/ParamPoly3.cpp
   src/Poly3.cpp
   src/Polynomial.cpp
-  # src/Position.cpp
+  src/Position.cpp
   src/Repeat.cpp
   src/RMObject.cpp
   src/Road.cpp
   src/RoadLink.cpp
-  # src/RoadManager.cpp
+  
+  src/PolyLineShape.cpp
+  src/Route.cpp
+  src/RoadPath.cpp
+  src/RMTrajectory.cpp
+  src/PolyLineBase.cpp
+  src/NurbsShape.cpp
+  src/ClothoidShape.cpp
+  
+  src/RoadManager.cpp
   src/RoadObject.cpp  
   src/Signal.cpp
   src/Spiral.cpp
@@ -48,6 +57,16 @@ set(PUGIXML_INCLUDE_DIR ../../../externals/pugixml)
 SOURCE_GROUP("External Libraries" FILES ${SRC_ADDITIONAL})
 
 set ( INCLUDES
+
+  inc/PolyLineShape.hpp
+  inc/Route.hpp
+  inc/RoadPath.hpp
+  inc/RMTrajectory.hpp
+  inc/PolyLineBase.hpp
+  inc/NurbsShape.hpp
+  inc/ClothoidShape.hpp
+  inc/IShape.hpp
+
   inc/Arc.hpp
   inc/Bridge.hpp
   inc/Connection.hpp
