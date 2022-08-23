@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <sstream>
@@ -10,9 +11,9 @@
 #include "Outline.hpp"
 #include "RMObject.hpp"
 #include "Road.hpp"
+#include "Signal.hpp"
 #include "Userdata.hpp"
 #include "pugixml.hpp"
-#include "Signal.hpp"
 
 #define ROADMARK_WIDTH_STANDARD 0.15
 #define ROADMARK_WIDTH_BOLD 0.20
@@ -186,5 +187,3 @@ class OpenDrive {
 	OpenDriveHeader header_;
 	std::string odr_filename_;
 };
-
-
